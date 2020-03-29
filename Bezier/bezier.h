@@ -71,6 +71,23 @@ public:
 
     void DrawControlPoints()
     {
+        if (selected)
+        {
+            glColor3d(1.0, 1.0, 1.0);
+            for (size_t p = 0; p < 4; p++)
+            {
+                glBegin(GL_POLYGON);
+                for (int i = 0; i < 32; i++)
+                {
+                    double theta = (double)i / 32.0 * 2.0 * 3.1415926;
+                    double x = Points[p].x + (ControlPointRadius + 1.0) * cos(theta);
+                    double y = Points[p].y + (ControlPointRadius + 1.0) * sin(theta);
+                    glVertex2d(x, y);
+                }
+                glEnd();
+            }
+        }
+
         glColor3d(red, green, blue);
         for (size_t p = 0; p < 4; p++)
         {
@@ -83,7 +100,6 @@ public:
                 glVertex2d(x, y);
             }
             glEnd();
-
         }
     }
 };

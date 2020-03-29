@@ -12,8 +12,8 @@ int timeSinceStart;
 int oldTimeSinceStart = 0;
 int deltaTime;
 
-int selectedBezier = -1;
-int selectedControlPoint = -1;
+int movingBezier = -1;
+int movingControlPoint = -1;
 std::vector<Bezier> curves;
 
 
@@ -142,15 +142,20 @@ void mouseButton(int mouse_button, int state, int x, int y)
             int sel = curves[i].IsPicked(clickPoint);
             if (sel != -1)
             {
-                selectedBezier = i;
-                selectedControlPoint = sel;
+                movingBezier = i;
+                movingControlPoint = sel;
+                curves[i].selected = true;
+            }
+            else 
+            {
+                curves[i].selected = false;
             }
         }
     }
     if (mouse_button == GLUT_LEFT_BUTTON && state == GLUT_UP)
     {
-        selectedBezier = -1;
-        selectedControlPoint = -1;
+        movingBezier = -1;
+        movingControlPoint = -1;
     }
     if (mouse_button == GLUT_MIDDLE_BUTTON && state == GLUT_DOWN)
     {
@@ -163,10 +168,10 @@ void mouseButton(int mouse_button, int state, int x, int y)
 
 void mouseMove(int x, int y)
 {
-    if (selectedBezier != -1)
+    if (movingBezier != -1)
     {
-        curves[selectedBezier].Points[selectedControlPoint].x = x;
-        curves[selectedBezier].Points[selectedControlPoint].y = screen_y - y;
+        curves[movingBezier].Points[movingControlPoint].x = x;
+        curves[movingBezier].Points[movingControlPoint].y = screen_y - y;
     }
 
 }
