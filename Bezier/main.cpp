@@ -59,6 +59,7 @@ void display(void)
     for (size_t i = 0; i < curves.size(); i++)
     {
         curves[i].DrawControlPoints();
+        curves[i].DrawCurve();
     }
 
     glutSwapBuffers();
