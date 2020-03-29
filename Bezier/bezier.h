@@ -8,11 +8,12 @@ public:
     glm::vec2 Points[4];
     float ControlPointRadius = 10.0;
     float red, green, blue;
+    bool selected = false;
 
     Bezier(float startingX, float startingY)
     {
         glm::vec2 right;
-        right.x = 40;
+        right.x = 100;
         right.y = 0;
 
         Points[0].x = startingX;

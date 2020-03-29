@@ -27,6 +27,15 @@ void DrawRectangle(double x1, double y1, double x2, double y2)
     glEnd();
 }
 
+void CreateNewBezier()
+{
+    if (curves.size() < 5)
+    {
+        Bezier b(40, 100 * (curves.size() + 1));
+        curves.push_back(b);
+    }
+}
+
 void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT);
@@ -90,6 +99,9 @@ void asciiKeyboardDown(unsigned char c, int x, int y)
 {
     switch (c)
     {
+    case '+':
+        CreateNewBezier();
+        break;
     case 27: // escape character means to quit the program
         exit(0);
         break;
@@ -170,8 +182,7 @@ void mouseWheel(int wheel, int direction, int x, int y)
 
 void InitializeMyStuff()
 {
-    Bezier b1(40, 40);
-    curves.push_back(b1);
+    CreateNewBezier();
 }
 
 void update(int deltaTime)
