@@ -1,5 +1,5 @@
 #pragma once
-#include "glm/vec2.hpp"
+#include "glm/glm.hpp"
 #include "GL/freeglut.h"
 
 class Bezier
@@ -20,6 +20,21 @@ public:
         Points[1] = Points[0] + right;
         Points[2] = Points[1] + right;
         Points[3] = Points[2] + right;
+    }
+
+    int IsPicked(glm::vec2 clickPoint)
+    {
+        for (size_t j = 0; j < 4; j++)
+        {
+            glm::vec2 res = clickPoint - Points[j];
+            float len = glm::length(res);
+
+            if (len < ControlPointRadius)
+            {
+                return j;
+            }
+        }
+        return -1;
     }
 
     //glm::vec2 Evaluate(float t)

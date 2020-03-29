@@ -126,16 +126,11 @@ void mouseButton(int mouse_button, int state, int x, int y)
     {
         for (size_t i = 0; i < curves.size(); i++)
         {
-            for (size_t j = 0; j < 4; j++)
+            int sel = curves[i].IsPicked(clickPoint);
+            if (sel != -1)
             {
-                glm::vec2 res = clickPoint - curves[i].Points[j];
-                float len = glm::length(res);
-                
-                if (len < curves[i].ControlPointRadius)
-                {
-                    selectedBezier = i;
-                    selectedControlPoint = j;
-                }
+                selectedBezier = i;
+                selectedControlPoint = sel;
             }
         }
     }
