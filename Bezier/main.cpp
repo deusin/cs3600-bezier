@@ -1,4 +1,6 @@
 #include "GL/freeglut.h"
+#include "bezier.h"
+#include <vector>
 
 // Global Variables
 double screen_x = 800;
@@ -8,6 +10,8 @@ bool loopExit = false;
 int timeSinceStart;
 int oldTimeSinceStart = 0;
 int deltaTime;
+
+std::vector<Bezier> curves;
 
 
 void DrawRectangle(double x1, double y1, double x2, double y2)
@@ -29,8 +33,8 @@ void display(void)
     //blueSlider.Draw();
 
     //glColor3d(redSlider.GetValue(), greenSlider.GetValue(), blueSlider.GetValue());
-    glColor3d(1.0, 0.4, 0.2);
-    DrawRectangle(10, 160, screen_x - 10, screen_y - 10);
+    //glColor3d(1.0, 0.4, 0.2);
+    //DrawRectangle(10, 160, screen_x - 10, screen_y - 10);
 
     //glColor3d(0, 0, 0);
 
@@ -48,6 +52,11 @@ void display(void)
     //std::stringstream ss3;
     //ss3 << blue;
     //DrawText(screen_x - 90, 30, ss3.str().c_str());
+
+    for (size_t i = 0; i < curves.size(); i++)
+    {
+        curves[i].DrawControlPoints();
+    }
 
     glutSwapBuffers();
 }
@@ -140,7 +149,8 @@ void mouseWheel(int wheel, int direction, int x, int y)
 
 void InitializeMyStuff()
 {
-
+    Bezier b1(40, 40);
+    curves.push_back(b1);
 }
 
 void update(int deltaTime)
