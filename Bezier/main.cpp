@@ -1,6 +1,7 @@
 #include "GL/freeglut.h"
 #include "bezier.h"
 #include <vector>
+#include <glm/glm.hpp>
 
 // Global Variables
 double screen_x = 800;
@@ -11,6 +12,8 @@ int timeSinceStart;
 int oldTimeSinceStart = 0;
 int deltaTime;
 
+int selectedBezier = -1;
+int selectedControlPoint = -1;
 std::vector<Bezier> curves;
 
 
@@ -115,11 +118,31 @@ void asciiKeyboardUp(unsigned char c, int x, int y)
 // system whenever any mouse button goes up or down.
 void mouseButton(int mouse_button, int state, int x, int y)
 {
+    glm::vec2 clickPoint;
+    clickPoint.x = x;
+    clickPoint.y = screen_y - y;
+
     if (mouse_button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
     {
+        for (size_t i = 0; i < curves.size(); i++)
+        {
+            for (size_t j = 0; j < 4; j++)
+            {
+                glm::vec2 res = clickPoint - curves[i].Points[j];
+                float len = glm::length(res);
+                
+                if (len < curves[i].ControlPointRadius)
+                {
+                    selectedBezier = i;
+                    selectedControlPoint = j;
+                }
+            }
+        }
     }
     if (mouse_button == GLUT_LEFT_BUTTON && state == GLUT_UP)
     {
+        selectedBezier = -1;
+        selectedControlPoint = -1;
     }
     if (mouse_button == GLUT_MIDDLE_BUTTON && state == GLUT_DOWN)
     {
@@ -132,10 +155,13 @@ void mouseButton(int mouse_button, int state, int x, int y)
 
 void mouseMove(int x, int y)
 {
+    if (selectedBezier != -1)
+    {
+        curves[selectedBezier].Points[selectedControlPoint].x = x;
+        curves[selectedBezier].Points[selectedControlPoint].y = screen_y - y;
+    }
 
 }
-
-
 
 void mouseWheel(int wheel, int direction, int x, int y)
 {
@@ -143,7 +169,6 @@ void mouseWheel(int wheel, int direction, int x, int y)
     //direction : a + / -1 value indicating the wheel movement direction
     //x, y : the window mouse coordinates
 }
-
 
 #pragma endregion Mouse
 
